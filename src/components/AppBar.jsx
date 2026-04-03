@@ -1,26 +1,13 @@
-import { View, StyleSheet, Pressable } from "react-native";
-import Text from "./Text";
-import Constants from "expo-constants";
-import theme from "../theme";
-
-const styles = StyleSheet.create({
-  container: {
-    paddingTop: Constants.statusBarHeight,
-    backgroundColor: theme.colors.textPrimary,
-  },
-  text: {
-    paddingVertical: 25,
-    paddingHorizontal: 15,
-    color: "#fff",
-    fontWeight: theme.fontWeights.bold,
-  },
-});
+import { View, Pressable, Text } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const AppBar = () => {
+  const insets = useSafeAreaInsets();
+
   return (
-    <View style={styles.container}>
+    <View className="bg-[#24292e]" style={{ paddingTop: insets.top }}>
       <Pressable>
-        <Text style={styles.text} fontSize={"subheading"}>
+        <Text className="font-bold color-white px-5 py-10 text-xl">
           Repositories
         </Text>
       </Pressable>
