@@ -3,7 +3,7 @@ import Count from "./Count";
 
 const RepositoryItem = ({ item }) => {
   return (
-    <View className="p-5">
+    <View className="p-5 bg-white">
       <View className="flex-row gap-5">
         <Image
           className="h-[60] w-[60] rounded-md"
