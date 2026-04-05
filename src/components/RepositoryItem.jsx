@@ -1,4 +1,4 @@
-import { Image, Text, View } from "react-native";
+import { Image, Text, View, Platform } from "react-native";
 import Count from "./Count";
 
 const RepositoryItem = ({ item }) => {
@@ -10,7 +10,18 @@ const RepositoryItem = ({ item }) => {
           source={{ uri: item.ownerAvatarUrl }}
         />
         <View className="flex-1">
-          <Text className="text-2xl font-bold">{item.fullName}</Text>
+          <Text
+            className="text-2xl font-bold"
+            style={{
+              fontFamily: Platform.select({
+                android: "Roboto",
+                ios: "Arial",
+                default: "System",
+              }),
+            }}
+          >
+            {item.fullName}
+          </Text>
           <Text className="text-xl color-slate-600 my-2">
             {item.description}
           </Text>
