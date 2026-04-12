@@ -2,7 +2,6 @@ import { StatusBar } from "expo-status-bar";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { NativeRouter } from "react-router-native";
 import { ApolloProvider } from "@apollo/client/react";
-import Constants from "expo-constants";
 
 import "./global.css";
 import Main from "./src/components/Main";
@@ -14,8 +13,6 @@ const authStorage = new AuthStorage();
 const apolloClient = createApolloClient(authStorage);
 
 export default function App() {
-  console.log(Constants.expoConfig);
-
   return (
     <SafeAreaProvider>
       <NativeRouter
