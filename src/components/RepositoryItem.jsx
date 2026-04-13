@@ -3,7 +3,7 @@ import Count from "./Count";
 
 const RepositoryItem = ({ item }) => {
   return (
-    <View className="p-5 bg-white">
+    <View className="p-5 bg-white" testID="repositoryItem">
       <View className="flex-row gap-5">
         <Image
           className="h-[60] w-[60] rounded-md"
@@ -32,10 +32,22 @@ const RepositoryItem = ({ item }) => {
       </View>
 
       <View className="flex-row justify-evenly my-5">
-        <Count label={"Stars"} count={item.stargazersCount} />
-        <Count label={"Forks"} count={item.forksCount} />
-        <Count label={"Reviews"} count={item.reviewCount} />
-        <Count label={"Rating"} count={item.ratingAverage} />
+        <Count
+          label={"Stars"}
+          count={item.stargazersCount}
+          testID={"stargazersCount"}
+        />
+        <Count label={"Forks"} count={item.forksCount} testID={"forksCount"} />
+        <Count
+          label={"Reviews"}
+          count={item.reviewCount}
+          testID={"reviewCount"}
+        />
+        <Count
+          label={"Rating"}
+          count={item.ratingAverage}
+          testID={"ratingAverage"}
+        />
       </View>
     </View>
   );
