@@ -12,8 +12,11 @@
   },
   "jest": {
     "preset": "jest-expo",
+    "transform": {
+      "^.+\\.jsx?$": "babel-jest"
+    },
     "transformIgnorePatterns": [
-      "node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|@sentry/react-native|native-base|react-native-svg)"
+      "node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|@sentry/react-native|native-base|react-native-svg|react-router-native)"
     ],
     "setupFilesAfterEnv": [
       "<rootDir>/setupTest.js"
@@ -24,9 +27,11 @@
     "@expo/metro-config": "^55.0.13",
     "@expo/metro-runtime": "~55.0.9",
     "@react-native-async-storage/async-storage": "2.2.0",
+    "date-fns": "^4.1.0",
     "dotenv": "^17.4.1",
     "expo": "~55.0.11",
     "expo-constants": "~55.0.11",
+    "expo-linking": "~55.0.13",
     "expo-status-bar": "~55.0.5",
     "formik": "^2.4.9",
     "graphql": "^16.13.2",

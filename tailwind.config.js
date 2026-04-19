@@ -3,7 +3,11 @@ module.exports = {
   content: ["./App.js", "./src/**/*.{js,jsx}"],
   presets: [require("nativewind/preset")],
   theme: {
-    extend: {},
+    extend: {
+      borderWidth: {
+        3: "3px",
+      },
+    },
   },
   plugins: [],
 };

@@ -1,8 +1,7 @@
-import { FlatList, View, Text } from "react-native";
+import { FlatList, Text } from "react-native";
 import RepositoryItem from "./RepositoryItem";
-import useRepositories from "../hooks/useRepository";
-
-const ItemSeparator = () => <View className="h-5 bg-[#e3e6e9]" />;
+import useRepositories from "../hooks/useRepositories";
+import ItemSeparator from "./ItemSeparator";
 
 export const RepositoryListContainer = ({ repositories }) => {
   const repositoryNodes = repositories

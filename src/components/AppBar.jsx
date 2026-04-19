@@ -25,11 +25,18 @@ const AppBar = () => {
         </Link>
 
         {user ? (
-          <Pressable onPress={handleLogout}>
-            <Text className="font-bold color-white px-5 py-3 text-xl">
-              Sign Out
-            </Text>
-          </Pressable>
+          <>
+            <Link to={"/create-review"} asChild>
+              <Text className="font-bold color-white px-5 py-3 text-xl">
+                Create a review
+              </Text>
+            </Link>
+            <Pressable onPress={handleLogout}>
+              <Text className="font-bold color-white px-5 py-3 text-xl">
+                Sign Out
+              </Text>
+            </Pressable>
+          </>
         ) : (
           <Link to={"/signin"} asChild>
             <Text className="font-bold color-white px-5 py-3 text-xl">
