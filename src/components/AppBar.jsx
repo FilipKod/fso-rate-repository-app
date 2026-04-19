@@ -38,11 +38,18 @@ const AppBar = () => {
             </Pressable>
           </>
         ) : (
-          <Link to={"/signin"} asChild>
-            <Text className="font-bold color-white px-5 py-3 text-xl">
-              Sign In
-            </Text>
-          </Link>
+          <>
+            <Link to={"/signin"} asChild>
+              <Text className="font-bold color-white px-5 py-3 text-xl">
+                Sign In
+              </Text>
+            </Link>
+            <Link to={"/signup"} asChild>
+              <Text className="font-bold color-white px-5 py-3 text-xl">
+                Sign Up
+              </Text>
+            </Link>
+          </>
         )}
       </ScrollView>
     </View>

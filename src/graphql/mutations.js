@@ -31,3 +31,12 @@ export const CREATE_REVIEW_MUTATION = gql`
   ${REPOSITORY_INFO_FRAGMENT}
   ${REVIEW_BASE_INFO_FRAGMENT}
 `;
+
+export const CREATE_USER_MUTATION = gql`
+  mutation CreateUser($user: CreateUserInput) {
+    createUser(user: $user) {
+      id
+      username
+    }
+  }
+`;

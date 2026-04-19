@@ -53,7 +53,7 @@ export const SignInContainer = ({ onSubmit }) => {
           autoCapitalize="none"
           onChangeText={formik.handleChange("password")}
           value={formik.values.password}
-          className={`py-3 px-5 border-solid border rounded-md ${
+          className={`py-3 px-5 border-solid border rounded-md text-lg ${
             formik.touched.password && formik.errors.password
               ? "border-red-700"
               : "border-gray-600"
