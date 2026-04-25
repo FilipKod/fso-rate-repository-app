@@ -31,6 +31,11 @@ const AppBar = () => {
                 Create a review
               </Text>
             </Link>
+            <Link to={"/my-reviews"} asChild>
+              <Text className="font-bold color-white px-5 py-3 text-xl">
+                My reviews
+              </Text>
+            </Link>
             <Pressable onPress={handleLogout}>
               <Text className="font-bold color-white px-5 py-3 text-xl">
                 Sign Out

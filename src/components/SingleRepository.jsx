@@ -10,7 +10,9 @@ export const SingleRepositoryContainer = ({ repository }) => {
     ? repository.reviews.edges.map((edge) => edge.node)
     : [];
 
-  const renderItem = ({ item }) => <ReviewItem item={item} />;
+  const renderItem = ({ item }) => (
+    <ReviewItem item={item} title={item.user.username} />
+  );
 
   return (
     <View className="flex-1">

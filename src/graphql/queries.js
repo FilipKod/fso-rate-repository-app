@@ -37,6 +37,10 @@ export const GET_REPOSITORY = gql`
         edges {
           node {
             ...ReviewBaseInfo
+            user {
+              id
+              username
+            }
           }
         }
       }
@@ -48,10 +52,23 @@ export const GET_REPOSITORY = gql`
 `;
 
 export const ME_QUERY = gql`
-  query Me {
+  query Me($includeReviews: Boolean = false) {
     me {
       id
       username
+      reviews @include(if: $includeReviews) {
+        totalCount
+        edges {
+          node {
+            ...ReviewBaseInfo
+            repository {
+              fullName
+            }
+          }
+        }
+      }
     }
   }
+
+  ${REVIEW_BASE_INFO_FRAGMENT}
 `;

@@ -20,9 +20,5 @@ export const REVIEW_BASE_INFO_FRAGMENT = gql`
     createdAt
     rating
     text
-    user {
-      id
-      username
-    }
   }
 `;
