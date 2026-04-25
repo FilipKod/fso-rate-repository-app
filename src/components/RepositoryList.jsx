@@ -1,10 +1,11 @@
-import { FlatList, StyleSheet, Text, View } from "react-native";
+import { FlatList, StyleSheet, Text, TextInput, View } from "react-native";
 import RNPickerSelect from "react-native-picker-select";
 import { Ionicons } from "@expo/vector-icons";
 import RepositoryItem from "./RepositoryItem";
 import useRepositories from "../hooks/useRepositories";
 import ItemSeparator from "./ItemSeparator";
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import { useDebounce } from "use-debounce";
 
 const pickerStyles = StyleSheet.create({
   inputAndroid: {
@@ -18,64 +19,127 @@ const pickerStyles = StyleSheet.create({
   },
   iconContainer: {
     top: 50 - 12,
-
     right: 12 + 30,
+  },
+  shadow: {
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 5,
+    },
+    shadowOpacity: 0.36,
+    shadowRadius: 6.68,
+    elevation: 11,
   },
 });
 
-export const RepositoryListContainer = ({ repositories, order, setOrder }) => {
+const RepositoryListHeader = ({
+  order,
+  setOrder,
+  filterString,
+  setFilterString,
+}) => {
+  return (
+    <View>
+      <View
+        className="flex-row justify-center items-center bg-white m-5 rounded-full px-3 py-2"
+        style={pickerStyles.shadow}
+      >
+        <Ionicons color={"#333"} size={24} name="search" className="p-2" />
+        <TextInput
+          placeholder="filter"
+          autoCapitalize="none"
+          className="text-xl flex-1"
+          onChangeText={(text) => {
+            setFilterString(text.toLowerCase());
+          }}
+          value={filterString}
+        />
+        {!!filterString.length && (
+          <Ionicons
+            color={"#333"}
+            size={30}
+            name="close-outline"
+            className="p-2"
+            onPress={() => {
+              setFilterString("");
+            }}
+          />
+        )}
+      </View>
+      <RNPickerSelect
+        items={[
+          { label: "Latest repositories", value: "LATEST" },
+          { label: "Highest rated repositories", value: "HIGHEST_RATED" },
+          { label: "Lowest rated repositories", value: "LOWEST_RATED" },
+        ]}
+        onValueChange={(value) => {
+          if (!value) return;
+          setOrder(value);
+        }}
+        value={order}
+        style={pickerStyles}
+        useNativeAndroidPickerStyle={false}
+        placeholder={{}}
+        Icon={() => <Ionicons name="chevron-down" size={24} color="gray" />}
+      />
+    </View>
+  );
+};
+
+export const RepositoryListContainer = ({
+  order,
+  setOrder,
+  filterString,
+  setFilterString,
+  repositories,
+  loading,
+}) => {
   const repositoryNodes = repositories
     ? repositories.edges.map((edge) => edge.node)
     : [];
 
-  const renderItem = ({ item }) => <RepositoryItem item={item} />;
+  const renderHeader = useMemo(
+    () => (
+      <RepositoryListHeader
+        order={order}
+        setOrder={setOrder}
+        filterString={filterString}
+        setFilterString={setFilterString}
+      />
+    ),
+    [order, setOrder, filterString, setFilterString],
+  );
+
+  const loadingItem = <Text className="text-2xl text-center">Loading...</Text>;
 
   return (
     <FlatList
       data={repositoryNodes}
       ItemSeparatorComponent={ItemSeparator}
-      renderItem={renderItem}
-      ListHeaderComponent={
-        <View>
-          <RNPickerSelect
-            items={[
-              { label: "Latest repositories", value: "LATEST" },
-              { label: "Highest rated repositories", value: "HIGHEST_RATED" },
-              { label: "Lowest rated repositories", value: "LOWEST_RATED" },
-            ]}
-            onValueChange={(value) => {
-              if (!value) return;
-              console.log(value);
-              setOrder(value);
-            }}
-            key={order}
-            value={order}
-            style={pickerStyles}
-            useNativeAndroidPickerStyle={false}
-            placeholder={{}}
-            Icon={() => {
-              return <Ionicons name="chevron-down" size={24} color="gray" />;
-            }}
-          />
-        </View>
-      }
+      renderItem={({ item }) => <RepositoryItem item={item} />}
+      ListHeaderComponent={renderHeader}
+      ListFooterComponent={loading ? loadingItem : null}
+      keyboardShouldPersistTaps="handled"
     />
   );
 };
 
 const RepositoryList = () => {
-  const [selectedOrder, setSelectedOrder] = useState("LATEST");
-  const { repositories, loading } = useRepositories(selectedOrder);
+  const [order, setOrder] = useState("LATEST");
+  const [filterString, setFilterString] = useState("");
+  const [search] = useDebounce(filterString, 500);
 
-  if (loading) {
-    return <Text className="text-center text-xl p-5">Loading...</Text>;
-  }
+  const { repositories, loading } = useRepositories(order, search);
 
   return (
     <RepositoryListContainer
+      order={order}
+      setOrder={setOrder}
+      filterString={filterString}
+      setFilterString={setFilterString}
       repositories={repositories}
-      order={selectedOrder}
-      setOrder={setSelectedOrder}
+      loading={loading}
     />
   );
 };
