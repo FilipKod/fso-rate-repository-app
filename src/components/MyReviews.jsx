@@ -1,11 +1,12 @@
-import { FlatList, Text } from "react-native";
+import { FlatList, Text, Alert } from "react-native";
 import ItemSeparator from "./ItemSeparator";
 import useMyReviews from "../hooks/useMyReviews";
 import ReviewItem from "./ReviewItem";
 import { useNavigate } from "react-router-native";
 import { useEffect } from "react";
+import useDeleteReview from "../hooks/useDeleteReview";
 
-export const MyReviewsContainer = ({ reviews, loading }) => {
+export const MyReviewsContainer = ({ reviews, loading, onDelete }) => {
   const reviewsNode = reviews ? reviews.edges.map((edge) => edge.node) : [];
 
   const loadingItem = <Text className="text-2xl text-center">Loading...</Text>;
@@ -15,7 +16,12 @@ export const MyReviewsContainer = ({ reviews, loading }) => {
       data={reviewsNode}
       ItemSeparatorComponent={ItemSeparator}
       renderItem={({ item }) => (
-        <ReviewItem item={item} title={item.repository.fullName} />
+        <ReviewItem
+          item={item}
+          title={item.repository.fullName}
+          viewRepositoryId={item.repository.id}
+          onDelete={onDelete}
+        />
       )}
       ListFooterComponent={loading ? loadingItem : null}
     />
@@ -24,6 +30,7 @@ export const MyReviewsContainer = ({ reviews, loading }) => {
 
 const MyReviews = () => {
   const { loading, me } = useMyReviews();
+  const [deleteReview] = useDeleteReview();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -38,7 +45,37 @@ const MyReviews = () => {
     );
   }
 
-  return <MyReviewsContainer loading={loading} reviews={me?.reviews} />;
+  const handleDeleteReview = async (id) => {
+    Alert.alert(
+      "Delete review",
+      "Are you sure you want to delete this review?",
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          text: "Delete",
+          style: "destructive",
+          onPress: async () => {
+            try {
+              await deleteReview(id);
+            } catch (error) {
+              console.log(error);
+            }
+          },
+        },
+      ],
+    );
+  };
+
+  return (
+    <MyReviewsContainer
+      loading={loading}
+      reviews={me?.reviews}
+      onDelete={handleDeleteReview}
+    />
+  );
 };
 
 export default MyReviews;

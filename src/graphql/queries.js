@@ -63,6 +63,7 @@ export const ME_QUERY = gql`
             ...ReviewBaseInfo
             repository {
               fullName
+              id
             }
           }
         }
