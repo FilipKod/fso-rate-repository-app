@@ -17,18 +17,34 @@ const orderVariables = {
 };
 
 const useRepositories = (order, searchKeyword = "") => {
-  const { data, error, loading } = useQuery(GET_REPOSITORIES, {
+  const { data, error, loading, fetchMore } = useQuery(GET_REPOSITORIES, {
     fetchPolicy: "cache-and-network",
     // notifyOnNetworkStatusChange: false,
     variables: {
       ...orderVariables[order],
       searchKeyword,
+      first: 3,
     },
   });
 
+  const handleFetchMore = () => {
+    const canFetchMore = !loading && data?.repositories.pageInfo.hasNextPage;
+
+    if (!canFetchMore) return;
+
+    fetchMore({
+      variables: {
+        after: data.repositories.pageInfo.endCursor,
+        ...orderVariables[order],
+        searchKeyword,
+        first: 3,
+      },
+    });
+  };
+
   const repositories = data ? data.repositories : undefined;
 
-  return { loading, error, repositories };
+  return { loading, error, repositories, fetchMore: handleFetchMore };
 };
 
 export default useRepositories;

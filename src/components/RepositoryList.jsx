@@ -94,6 +94,7 @@ export const RepositoryListContainer = ({
   setFilterString,
   repositories,
   loading,
+  onEndReached,
 }) => {
   const repositoryNodes = repositories
     ? repositories.edges.map((edge) => edge.node)
@@ -121,6 +122,8 @@ export const RepositoryListContainer = ({
       ListHeaderComponent={renderHeader}
       ListFooterComponent={loading ? loadingItem : null}
       keyboardShouldPersistTaps="handled"
+      onEndReached={onEndReached}
+      onEndReachedThreshold={0.5}
     />
   );
 };
@@ -130,7 +133,7 @@ const RepositoryList = () => {
   const [filterString, setFilterString] = useState("");
   const [search] = useDebounce(filterString, 500);
 
-  const { repositories, loading } = useRepositories(order, search);
+  const { repositories, loading, fetchMore } = useRepositories(order, search);
 
   return (
     <RepositoryListContainer
@@ -140,6 +143,7 @@ const RepositoryList = () => {
       setFilterString={setFilterString}
       repositories={repositories}
       loading={loading}
+      onEndReached={fetchMore}
     />
   );
 };
