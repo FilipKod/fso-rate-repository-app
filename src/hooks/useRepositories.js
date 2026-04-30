@@ -17,14 +17,15 @@ const orderVariables = {
 };
 
 const useRepositories = (order, searchKeyword = "") => {
+  const variables = {
+    ...orderVariables[order],
+    searchKeyword,
+  };
+
   const { data, error, loading, fetchMore } = useQuery(GET_REPOSITORIES, {
     fetchPolicy: "cache-and-network",
     // notifyOnNetworkStatusChange: false,
-    variables: {
-      ...orderVariables[order],
-      searchKeyword,
-      first: 3,
-    },
+    variables,
   });
 
   const handleFetchMore = () => {
@@ -35,9 +36,7 @@ const useRepositories = (order, searchKeyword = "") => {
     fetchMore({
       variables: {
         after: data.repositories.pageInfo.endCursor,
-        ...orderVariables[order],
-        searchKeyword,
-        first: 3,
+        ...variables,
       },
     });
   };
